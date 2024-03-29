@@ -1,0 +1,17 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+canvas {
+    background: black;
+    width: 100vw;
+    height: 100vh;
+    display: block;
+}
+
+div {
+    background: black;
+    width: 100px;
+    height: 100px;
+}
