@@ -3,12 +3,16 @@
 const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
 
-const numberOfParticles = 10000;
+const k = 0.004;
+
+console.log(canvas.width, canvas.height, canvas.width * canvas.height * k);
+
+const numberOfParticles = canvas.height * canvas.width * k;
 let particles = [];
 let flowField = [];
 
 let inc = 0.1;
-let scale = 30;
+let scale = canvas.width / 64;
 let zoff = 0;
 let incz = 0.00005;
 let down = false;
