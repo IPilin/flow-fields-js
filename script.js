@@ -3,11 +3,14 @@
 const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
 
-const k = 0.004;
+let numberOfParticles = 1000;
+const nParticles = document.getElementById('nParticles');
+nParticles.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+        addParticles(parseInt(nParticles.value));
+    }
+});
 
-console.log(canvas.width, canvas.height, canvas.width * canvas.height * k);
-
-const numberOfParticles = canvas.height * canvas.width * k;
 let particles = [];
 let flowField = [];
 
@@ -27,6 +30,23 @@ function setup() {
     for (let i = 0; i < numberOfParticles; i++) {
         particles.push(new Particle(random(0, canvas.width), random(0, canvas.height), color));
     }
+}
+
+function addParticles(count) {
+    if (count == numberOfParticles) return;
+    if (count > numberOfParticles) {
+        for (let i = 0; i < count - numberOfParticles; i++) {
+            particles.push(new Particle(random(0, canvas.width), random(0, canvas.height), particles[i].color));
+        }
+        numberOfParticles = count;
+        return;
+    }
+    for (let i = 0; i < numberOfParticles - count; i++) {
+        particles.shift();
+    }
+    numberOfParticles = count;
+
+    console.log(particles.length);
 }
 
 function draw() {

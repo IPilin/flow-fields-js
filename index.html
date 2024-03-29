@@ -1,18 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flow</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <canvas id="canvas1"></canvas>
-    <div id="color"></div>
+    <div class="endbar">
+        <div class="col" id="color"></div>
+        <div class="col">
+            <p>Number of particles</p>
+            <input id="nParticles" type="number" value="1000">
+        </div>
+        <div class="col">
+            <p>Color alpha</p>
+            <input id="cAlpha" type="number" value="40">
+        </div>
+    </div>
     <script src="math.js"></script>
     <script src="webgl.js"></script>
     <script src="particle.js"></script>
     <script src="noise.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>

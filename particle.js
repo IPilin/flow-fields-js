@@ -2,6 +2,15 @@ const MIN_COLOR = 0;
 const MAX_COLOR = 360;
 
 let block = document.getElementById('color');
+const alphaInput = document.getElementById('cAlpha');
+
+alphaInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+        alpha = alphaInput.value;
+    }
+});
+
+let alpha = 40;
 
 class Particle {
     constructor(x = 0, y = 0, color) {
@@ -91,7 +100,7 @@ class Particle {
 
         block.style.backgroundColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
 
-        stroke(rgb.r, rgb.g, rgb.b, 20);
+        stroke(rgb.r, rgb.g, rgb.b, alpha);
         line(this.pos.x, this.pos.y, this.prevPos.x, this.prevPos.y);
         this.updatePrev();
 
