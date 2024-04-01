@@ -275,10 +275,10 @@ function lines(time) {
     if (colorTime > 10) {
         if (colorDown) {
             lineColor--;
-            if (lineColor == MIC_C) colorDown = !colorDown;
+            if (lineColor < MIN_C) colorDown = !colorDown;
         } else {
             lineColor++;
-            if (lineColor == MAX_C) colorDown = !colorDown;
+            if (lineColor > MAX_C) colorDown = !colorDown;
         }
         colorTime = 0;
     }
