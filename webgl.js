@@ -81,7 +81,7 @@ let texcoordBuffer = gl.createBuffer();
 let updateProgram = makeUpdateProgram();
 let updateVelProgram = makeUpdateVelProgram();
 
-const numParticles = 15000;
+const numParticles = 10000;
 const positions = new Float32Array(numParticles * 4);
 for (let i = 0; i < positions.length; i += 4) {
     let x = random(0, cnv.width);
