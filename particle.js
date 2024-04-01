@@ -10,7 +10,7 @@ alphaInput.addEventListener('keydown', e => {
     }
 });
 
-let alpha = 40;
+let alpha = 0;
 
 class Particle {
     constructor(x = 0, y = 0, color) {
@@ -95,7 +95,7 @@ class Particle {
         // context.stroke();
         // this.updatePrev();
 
-        let rgb = hslToRgb(this.color, 100, 255);
+        let rgb = hslToRgb(this.color, 100, 60);
         //let rgb = gradient.getColor(this.timeColor);
 
         block.style.backgroundColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;

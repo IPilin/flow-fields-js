@@ -8,12 +8,14 @@ function makeUpdateProgram() {
         uniform vec2 canvasD;
 
         out vec4 newPos;
+        out vec2 newVel;
 
         float rand( vec2 co ) { return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453); }
         float random(float x, float min, float max) {
             return rand(vec2(x, deltaTime)) * (max - min) + min;
         }
-
+        
+        bool isNull = false;
         vec4 module(vec4 a, vec2 v) {
             vec4 result = vec4(a.r, a.g, a.r, a.g);
             result.r += v.x;
@@ -22,12 +24,14 @@ function makeUpdateProgram() {
                 result.r = random(result.r, 0.0, canvasD.x);
                 result.g = random(result.g, 0.0, canvasD.y);
                 result.ba = result.rg;
+                isNull = true;
             }
             return result;
         }
         
         void main() {
             newPos = module(oldPos, vel);
+            newVel = isNull ? vec2(0.0, 0.0) : vel;
         }
     `;
     const fragmentShaderCode =
@@ -62,7 +66,7 @@ function makeUpdateProgram() {
     let program = gl.createProgram();
     gl.attachShader(program, vertexShader);
     gl.attachShader(program, fragmentShader);
-    gl.transformFeedbackVaryings(program, ['newPos'], gl.SEPARATE_ATTRIBS);
+    gl.transformFeedbackVaryings(program, ['newPos', 'newVel'], gl.SEPARATE_ATTRIBS);
     gl.linkProgram(program);
 
     success = gl.getProgramParameter(program, gl.LINK_STATUS);

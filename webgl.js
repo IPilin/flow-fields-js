@@ -45,10 +45,18 @@ function makeVertexArray(gl, bufLocPairs) {
     return va;
 }
 
-function makeTransformFeedback(gl, buffer) {
+function makeTransformFeedback(gl, buffer1) {
     const tf = gl.createTransformFeedback();
     gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, tf);
-    gl.bindBufferBase(gl.TRANSFORM_FEEDBACK_BUFFER, 0, buffer);
+    gl.bindBufferBase(gl.TRANSFORM_FEEDBACK_BUFFER, 0, buffer1);
+    return tf;
+}
+
+function makeTransformFeedback2(gl, buffer1, buffer2) {
+    const tf = gl.createTransformFeedback();
+    gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, tf);
+    gl.bindBufferBase(gl.TRANSFORM_FEEDBACK_BUFFER, 0, buffer1);
+    gl.bindBufferBase(gl.TRANSFORM_FEEDBACK_BUFFER, 1, buffer2);
     return tf;
 }
 
@@ -120,8 +128,8 @@ const drawVA2 = makeVertexArray(gl, [
     [pos2Buffer, drawProgram.posAttrib, 2]
 ]);
 
-const tf1 = makeTransformFeedback(gl, pos1Buffer);
-const tf2 = makeTransformFeedback(gl, pos2Buffer);
+const tf1 = makeTransformFeedback2(gl, pos1Buffer, vel1Buffer);
+const tf2 = makeTransformFeedback2(gl, pos2Buffer, vel2Buffer);
 
 const tfVel1 = makeTransformFeedback(gl, vel1Buffer);
 const tfVel2 = makeTransformFeedback(gl, vel2Buffer);
@@ -196,17 +204,34 @@ function fill(r, g = r, b = r, a = 255) {
 
 
 let t = 0;
-let zi = 0.002;
+let zi = 0.001;
 let zf = 0;
 
 const MIN_C = 0;
 const MAX_C = 360;
 let lineColor = random(MIN_C, MAX_C);
+let colorTime = 0;
 
 function lines(time) {
     time *= 0.001;
     const dTime = time - t;
     t = time;
+
+    gl.useProgram(updateProgram.program);
+    gl.bindVertexArray(current.updateVA);
+    gl.uniform2f(updateProgram.canvasDUniform, cnv.width, cnv.height);
+    gl.uniform1f(updateProgram.timeUniform, dTime);
+
+    gl.enable(gl.RASTERIZER_DISCARD);
+
+    gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, current.tf);
+    gl.beginTransformFeedback(gl.POINTS);
+    gl.drawArrays(gl.POINTS, 0, numParticles);
+    gl.endTransformFeedback();
+    gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, null);
+    gl.bindVertexArray(null);
+
+    gl.disable(gl.RASTERIZER_DISCARD);
 
     let yf = 0;
     for (let y = 0; y < ROWS; y++) {
@@ -237,25 +262,15 @@ function lines(time) {
 
     gl.disable(gl.RASTERIZER_DISCARD);
 
-    gl.useProgram(updateProgram.program);
-    gl.bindVertexArray(current.updateVA);
-    gl.uniform2f(updateProgram.canvasDUniform, cnv.width, cnv.height);
-    gl.uniform1f(updateProgram.timeUniform, dTime);
-
-    gl.enable(gl.RASTERIZER_DISCARD);
-
-    gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, current.tf);
-    gl.beginTransformFeedback(gl.POINTS);
-    gl.drawArrays(gl.POINTS, 0, numParticles);
-    gl.endTransformFeedback();
-    gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK, null);
-    gl.bindVertexArray(null);
-
-    gl.disable(gl.RASTERIZER_DISCARD);
-
-    const rgb = hslToRgb(lineColor++, 100, 60);
+    colorTime++;
+    const rgb = hslToRgb(lineColor, 100, 60);
 
     stroke(rgb.r, rgb.g, rgb.b, 20);
+
+    if (colorTime > 10) {
+        lineColor++;
+        colorTime = 0;
+    }
 
     if (lineColor > MAX_C) lineColor = MIN_C;
 
