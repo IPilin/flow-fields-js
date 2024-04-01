@@ -134,7 +134,7 @@ const tf2 = makeTransformFeedback2(gl, pos2Buffer, vel2Buffer);
 const tfVel1 = makeTransformFeedback(gl, vel1Buffer);
 const tfVel2 = makeTransformFeedback(gl, vel2Buffer);
 
-const SCALE = gl.canvas.width / 64;
+const SCALE = gl.canvas.width / 70;
 const COLS = Math.floor(gl.canvas.width / SCALE);
 const ROWS = Math.floor(gl.canvas.height / SCALE);
 
@@ -208,7 +208,7 @@ function fill(r, g = r, b = r, a = 255) {
 
 
 let t = 0;
-let zi = 0.001;
+let zi = 0.0015;
 let zf = 0;
 
 const MIN_C = 0;
@@ -269,7 +269,7 @@ function lines(time) {
     colorTime++;
     const rgb = hslToRgb(lineColor, 100, 60);
 
-    stroke(rgb.r, rgb.g, rgb.b, 20);
+    stroke(rgb.r, rgb.g, rgb.b, 30);
 
     if (colorTime > 10) {
         lineColor++;
