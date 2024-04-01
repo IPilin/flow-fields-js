@@ -81,7 +81,7 @@ let texcoordBuffer = gl.createBuffer();
 let updateProgram = makeUpdateProgram();
 let updateVelProgram = makeUpdateVelProgram();
 
-const numParticles = 10000;
+const numParticles = 15000;
 const positions = new Float32Array(numParticles * 4);
 for (let i = 0; i < positions.length; i += 4) {
     let x = random(0, cnv.width);
@@ -211,10 +211,11 @@ let t = 0;
 let zi = 0.0015;
 let zf = 0;
 
-const MIN_C = 0;
+const MIN_C = 218;
 const MAX_C = 360;
 let lineColor = random(MIN_C, MAX_C);
 let colorTime = 0;
+let colorDown = false;
 
 function lines(time) {
     time *= 0.001;
@@ -272,11 +273,15 @@ function lines(time) {
     stroke(rgb.r, rgb.g, rgb.b, 30);
 
     if (colorTime > 10) {
-        lineColor++;
+        if (colorDown) {
+            lineColor--;
+            if (lineColor == MIC_C) colorDown = !colorDown;
+        } else {
+            lineColor++;
+            if (lineColor == MAX_C) colorDown = !colorDown;
+        }
         colorTime = 0;
     }
-
-    if (lineColor > MAX_C) lineColor = MIN_C;
 
     gl.useProgram(drawProgram.program);
     gl.bindFramebuffer(gl.FRAMEBUFFER, frameBuffer1);
