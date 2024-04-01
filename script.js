@@ -3,6 +3,8 @@
 const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
 
+const fpsLabel = document.getElementById('fps');
+
 let numberOfParticles = 1000;
 const nParticles = document.getElementById('nParticles');
 nParticles.addEventListener('keydown', e => {
@@ -51,9 +53,9 @@ function addParticles(count) {
 
 function draw() {
     let yoff = 0;
-    for (let y = 0; y < rows + 1; y++) {
+    for (let y = 0; y < rows; y++) {
         let xoff = 0;
-        for (let x = 0; x < cols + 1; x++) {
+        for (let x = 0; x < cols; x++) {
             let index = x + y * cols;
             let angle = map(perlin.get(xoff, yoff, zoff), -1, 1, 0, 1) * Math.PI * 4;
             let v = fromAngle(angle);
@@ -78,19 +80,27 @@ function draw() {
         //     zoff += random(0.00001, 0.0001);
         // }
     }
-    for (let i = 0; i < particles.length; i++) {
-        particles[i].follow(flowField, scale, cols);
-        particles[i].update(canvas.width, canvas.height);
-        particles[i].show(ctx);
-    }
+    // for (let i = 0; i < particles.length; i++) {
+    //     particles[i].follow(flowField, scale, cols);
+    //     particles[i].update(canvas.width, canvas.height);
+    //     particles[i].show(ctx);
+    // }
 }
 
-function animate() {
+let then = 0;
+function animate(time) {
     //ctx.clearRect(0, 0, canvas.width, canvas.height);
-    clear(0, 0, 0, 1);
+    //clear(0, 0, 0, 1);
     //pushTex();
-    draw();
+    //draw();
+    lines(time);
     drawScreen();
+
+    time *= 0.001;
+    const dTime = time - then;
+    then = time;
+    fpsLabel.textContent = (1 / dTime).toFixed(1);
+
     requestAnimationFrame(animate);
 }
 
@@ -112,3 +122,11 @@ function fromAngle(angle) {
 
 setup();
 animate();
+
+
+lines(1);
+drawScreen();
+lines(1);
+drawScreen();
+lines(1);
+drawScreen();
