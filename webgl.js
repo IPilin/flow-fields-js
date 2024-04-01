@@ -183,8 +183,8 @@ function resize() {
     const displayWidth  = Math.round(cnv.clientWidth * dpr);
     const displayHeight = Math.round(cnv.clientHeight * dpr);
 
-    cnv.width = displayWidth;
-    cnv.height = displayHeight;
+    cnv.width = cnv.clientWidth;
+    cnv.height = cnv.clientHeight;
 
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 }
