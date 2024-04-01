@@ -179,8 +179,12 @@ gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex
 gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
 function resize() {
-    cnv.width = cnv.clientWidth;
-    cnv.height = cnv.clientHeight;
+    const dpr = window.devicePixelRatio;
+    const displayWidth  = Math.round(cnv.clientWidth * dpr);
+    const displayHeight = Math.round(cnv.clientHeight * dpr);
+
+    cnv.width = displayWidth;
+    cnv.height = displayHeight;
 
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 }
