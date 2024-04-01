@@ -193,9 +193,16 @@ function fill(r, g = r, b = r, a = 255) {
     fillColor[3] = a;
 }
 
+
+
 let t = 0;
-let zi = 0.001;
+let zi = 0.002;
 let zf = 0;
+
+const MIN_C = 0;
+const MAX_C = 360;
+let lineColor = random(MIN_C, MAX_C);
+
 function lines(time) {
     time *= 0.001;
     const dTime = time - t;
@@ -246,7 +253,11 @@ function lines(time) {
 
     gl.disable(gl.RASTERIZER_DISCARD);
 
-    stroke(255, 0, 255, 20);
+    const rgb = hslToRgb(lineColor++, 100, 60);
+
+    stroke(rgb.r, rgb.g, rgb.b, 20);
+
+    if (lineColor > MAX_C) lineColor = MIN_C;
 
     gl.useProgram(drawProgram.program);
     gl.bindFramebuffer(gl.FRAMEBUFFER, frameBuffer1);
