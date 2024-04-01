@@ -37,7 +37,7 @@ function makeUpdateVelProgram() {
         void main() {
             vec4 flow = getAs1D(flow, pos.rg, scale);
             vec2 force = vec2(cos(flow.r), sin(flow.r));
-            force = setModule(force, 1.0);
+            force = setModule(force, 0.7);
             newVel = limit(vel + force, 5.0);
         }
     `;

@@ -134,7 +134,7 @@ const tf2 = makeTransformFeedback2(gl, pos2Buffer, vel2Buffer);
 const tfVel1 = makeTransformFeedback(gl, vel1Buffer);
 const tfVel2 = makeTransformFeedback(gl, vel2Buffer);
 
-const SCALE = gl.canvas.width / 70;
+const SCALE = gl.canvas.width / 64;
 const COLS = Math.floor(gl.canvas.width / SCALE);
 const ROWS = Math.floor(gl.canvas.height / SCALE);
 
