@@ -270,7 +270,7 @@ function lines(time) {
     colorTime++;
     const rgb = hslToRgb(lineColor, 100, 60);
 
-    stroke(rgb.r, rgb.g, rgb.b, 30);
+    stroke(rgb.r, rgb.g, rgb.b, 20);
 
     if (colorTime > 10) {
         if (colorDown) {
